@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Better New Tab</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="newtab.css" />
+</head>
+<body>
+  <main class="container">
+    
+    <!-- Top Row: Most Visited Sites + Search -->
+    <div id="top-row">
+      <!-- Left column: Most visited sites -->
+      <div id="top-sites-column">
+        <div id="top-sites" aria-label="Most Visited Sites"></div>
+      </div>
+
+      <!-- Right column: Search Bar -->
+      <div id="search-column">
+        <input 
+          id="bookmark-search" 
+          type="text" 
+          placeholder="Search bookmarks..." 
+          aria-label="Search bookmarks"
+        >
+      </div>
+    </div>
+
+    <!-- Root container where folders and bookmarks are rendered -->
+    <div 
+      id="bookmarks-root" 
+      class="bookmarks-root" 
+      aria-live="polite"
+      aria-label="Bookmarks"
+    ></div>
+
+  </main>
+
+  <!-- Load JavaScript module (bookmark rendering & top sites) -->
+  <script src="newtab.js" type="module"></script>
+</body>
+</html>

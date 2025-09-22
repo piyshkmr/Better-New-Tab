@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Better New Tab",
+  "description": "A fast, minimal new tab page that displays your bookmarks in collapsible folders with a clean, modern design.",
+  "version": "1.0.0",
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "topSites",
+    "favicon"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Better New Tab"
+  },
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

@@ -1,0 +1,348 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181a20;
+    --card-bg: #23262f;
+    --muted: #a1a1aa;
+    --accent: #60a5fa;
+    --shadow-light: 0 6px 18px rgba(0, 0, 0, 0.18);
+    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: var(--bg);
+    color: #e5e7eb;
+  }
+
+  .bookmark-card,
+  .top-site-card {
+    background: var(--card-bg);
+    color: #e5e7eb;
+  }
+
+  .bookmark-fav {
+    background: #23262f;
+  }
+
+  .folder-header,
+  .title-text,
+  .arrow {
+    color: #e5e7eb;
+  }
+
+  .bookmark-title,
+  .bookmark-url {
+    color: #e5e7eb;
+  }
+
+  .empty {
+    color: #e5e7eb;
+  }
+}
+
+/* =======================================================
+   VARIABLES & ROOT STYLES
+======================================================= */
+:root {
+  /* Colors */
+  --bg: #f6f7fb;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --shadow-light: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+  /* Spacing & sizing */
+  --gap: 14px;
+  --padding: 24px;
+  --radius: 12px;
+  --card-min: 200px;
+  --top-site-size: 40px;
+
+  /* Fonts */
+  --font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-size-base: 14px;
+  --font-size-title: 15px;
+  --font-size-url: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181a20;
+    --card-bg: #23262f;
+    --muted: #a1a1aa;
+    --accent: #60a5fa;
+    --shadow-light: 0 6px 18px rgba(0, 0, 0, 0.18);
+    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: var(--bg);
+    color: #e5e7eb;
+  }
+
+  .bookmark-card,
+  .top-site-card {
+    background: var(--card-bg);
+    color: #e5e7eb;
+  }
+
+  .bookmark-fav {
+    background: #23262f;
+  }
+}
+
+/* =======================================================
+   GLOBAL RESET & BASE
+======================================================= */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  padding: var(--padding);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =======================================================
+   TOP ROW (MOST VISITED + SEARCH)
+======================================================= */
+#top-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Left column: Most visited sites */
+#top-sites-column {
+  flex: 8;
+  /* 80% width */
+}
+
+#top-sites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Right column: Search bar */
+#search-column {
+  flex: 2;
+  /* 20% width */
+  display: flex;
+  align-items: center;
+}
+
+#search-column input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  border: none;
+  outline: none;
+  font-size: var(--font-size-base);
+}
+
+/* =======================================================
+   TOP SITES CARDS
+======================================================= */
+.top-site-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--top-site-size);
+  height: var(--top-site-size);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+}
+
+.top-site-card img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.top-site-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* =======================================================
+   BOOKMARK FOLDERS & ROOT
+======================================================= */
+.bookmarks-root {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 24px;
+}
+
+.folder {
+  background: transparent;
+}
+
+/* Folder header */
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px 12px;
+  width: fit-content;
+}
+
+.folder-header .arrow {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--accent);
+  transition: transform 160ms ease;
+}
+
+.folder-header .title-text {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+}
+
+/* Rotate arrow when folder collapsed */
+.folder-header.collapsed .arrow {
+  transform: rotate(-90deg);
+}
+
+/* Children grid for bookmarks */
+.folder-children {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--gap);
+  align-items: start;
+  padding: 6px;
+}
+
+/* =======================================================
+   BOOKMARK CARD
+======================================================= */
+.bookmark-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  padding: 12px;
+  text-decoration: none;
+  color: inherit;
+  min-height: 56px;
+  overflow: hidden;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.bookmark-card:hover {
+  transform: translateY(-4px);
+}
+
+.bookmark-card:active {
+  transform: translateY(-2px);
+}
+
+/* Favicon in card */
+.bookmark-fav {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bookmark-fav img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body */
+.bookmark-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.bookmark-title {
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.bookmark-url {
+  font-size: var(--font-size-url);
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty state */
+.empty {
+  color: var(--muted);
+  padding: 18px;
+  text-align: center;
+}
+
+/* =======================================================
+   RESPONSIVE TWEAKS
+======================================================= */
+@media (max-width: 640px) {
+  :root {
+    --card-min: 140px;
+  }
+
+  body {
+    padding: 14px;
+  }
+
+  #top-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #top-sites-column,
+  #search-column {
+    flex: 1;
+  }
+
+  #top-sites {
+    justify-content: flex-start;
+  }
+}
