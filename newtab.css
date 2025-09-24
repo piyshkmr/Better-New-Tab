@@ -3,9 +3,10 @@
     --bg: #181a20;
     --card-bg: #23262f;
     --muted: #a1a1aa;
-    --accent: #60a5fa;
-    --shadow-light: 0 6px 18px rgba(0, 0, 0, 0.18);
-    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.35);
+    --accent: #007fff;
+    --modal-bg: #1f2937;
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    --border: #374151;
     color-scheme: dark;
   }
 
@@ -39,6 +40,36 @@
   .empty {
     color: #e5e7eb;
   }
+
+  .search-modal-content,
+  .edit-modal-content {
+    background: var(--modal-bg);
+    color: #e5e7eb;
+    border: 2px solid var(--border);
+  }
+
+  .search-result-card {
+    background: var(--card-bg);
+    color: #e5e7eb;
+  }
+
+  input,
+  select {
+    background: var(--card-bg);
+    color: #e5e7eb;
+    border: 2px solid var(--border);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  .btn-secondary {
+    background: var(--card-bg);
+    color: #e5e7eb;
+    border: 2px solid var(--border);
+  }
 }
 
 /* =======================================================
@@ -49,9 +80,10 @@
   --bg: #f6f7fb;
   --card-bg: #ffffff;
   --muted: #6b7280;
-  --accent: #2563eb;
-  --shadow-light: 0 6px 18px rgba(15, 23, 42, 0.06);
-  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --accent: #007fff;
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --border: #d1d5db;
 
   /* Spacing & sizing */
   --gap: 14px;
@@ -65,34 +97,6 @@
   --font-size-base: 14px;
   --font-size-title: 15px;
   --font-size-url: 12px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #181a20;
-    --card-bg: #23262f;
-    --muted: #a1a1aa;
-    --accent: #60a5fa;
-    --shadow-light: 0 6px 18px rgba(0, 0, 0, 0.18);
-    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.35);
-    color-scheme: dark;
-  }
-
-  html,
-  body {
-    background-color: var(--bg);
-    color: #e5e7eb;
-  }
-
-  .bookmark-card,
-  .top-site-card {
-    background: var(--card-bg);
-    color: #e5e7eb;
-  }
-
-  .bookmark-fav {
-    background: #23262f;
-  }
 }
 
 /* =======================================================
@@ -122,8 +126,12 @@ body {
   margin: 0 auto;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* =======================================================
-   TOP ROW (MOST VISITED + SEARCH)
+   TOP ROW (MOST VISITED ONLY)
 ======================================================= */
 #top-row {
   display: flex;
@@ -131,33 +139,14 @@ body {
   margin-bottom: 20px;
 }
 
-/* Left column: Most visited sites */
 #top-sites-column {
-  flex: 8;
-  /* 80% width */
+  flex: 1;
 }
 
 #top-sites {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-}
-
-/* Right column: Search bar */
-#search-column {
-  flex: 2;
-  /* 20% width */
-  display: flex;
-  align-items: center;
-}
-
-#search-column input {
-  width: 100%;
-  padding: 12px 20px;
-  border-radius: var(--radius);
-  border: none;
-  outline: none;
-  font-size: var(--font-size-base);
 }
 
 /* =======================================================
@@ -171,8 +160,7 @@ body {
   height: var(--top-site-size);
   background: var(--card-bg);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-light);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
   text-decoration: none;
 }
 
@@ -185,7 +173,6 @@ body {
 
 .top-site-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
 }
 
 /* =======================================================
@@ -253,13 +240,13 @@ body {
   align-items: center;
   background: var(--card-bg);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-light);
   padding: 12px;
   text-decoration: none;
   color: inherit;
   min-height: 56px;
   overflow: hidden;
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  transition: transform 150ms ease;
+  position: relative;
 }
 
 .bookmark-card:hover {
@@ -268,6 +255,34 @@ body {
 
 .bookmark-card:active {
   transform: translateY(-2px);
+}
+
+/* Three-dot menu button */
+.bookmark-menu {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.bookmark-card:hover .bookmark-menu {
+  opacity: 1;
+}
+
+.bookmark-menu:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Favicon in card */
@@ -321,6 +336,192 @@ body {
 }
 
 /* =======================================================
+   SEARCH MODAL
+======================================================= */
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+}
+
+.search-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--modal-overlay);
+  opacity: 0.3;
+}
+
+.search-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: var(--modal-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  z-index: 1001;
+}
+
+#search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
+  outline: none;
+  margin-bottom: 16px;
+}
+
+#search-input:focus {
+  border-color: var(--accent);
+}
+
+.search-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-result-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.search-result-card:hover {
+  transform: translateY(-2px);
+}
+
+.search-result-card:last-child {
+  margin-bottom: 0;
+}
+
+/* =======================================================
+   EDIT MODAL
+======================================================= */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--modal-overlay);
+  opacity: 0.5;
+}
+
+.edit-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  background: var(--modal-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  z-index: 1001;
+}
+
+.edit-modal-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: var(--font-size-base);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid var(--border);
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-secondary:hover {
+  opacity: 0.8;
+}
+
+/* =======================================================
    RESPONSIVE TWEAKS
 ======================================================= */
 @media (max-width: 640px) {
@@ -332,14 +533,14 @@ body {
     padding: 14px;
   }
 
-  #top-row {
-    flex-direction: column;
-    gap: 12px;
+  .search-modal-content,
+  .edit-modal-content {
+    width: 95%;
+    padding: 20px;
   }
 
-  #top-sites-column,
-  #search-column {
-    flex: 1;
+  .search-modal {
+    padding-top: 10vh;
   }
 
   #top-sites {

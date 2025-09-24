@@ -10,21 +10,10 @@
 <body>
   <main class="container">
     
-    <!-- Top Row: Most Visited Sites + Search -->
+    <!-- Top Row: Most Visited Sites only -->
     <div id="top-row">
-      <!-- Left column: Most visited sites -->
       <div id="top-sites-column">
         <div id="top-sites" aria-label="Most Visited Sites"></div>
-      </div>
-
-      <!-- Right column: Search Bar -->
-      <div id="search-column">
-        <input 
-          id="bookmark-search" 
-          type="text" 
-          placeholder="Search bookmarks..." 
-          aria-label="Search bookmarks"
-        >
       </div>
     </div>
 
@@ -37,6 +26,46 @@
     ></div>
 
   </main>
+
+  <!-- Search Modal -->
+  <div id="search-modal" class="search-modal hidden">
+    <div class="search-modal-overlay"></div>
+    <div class="search-modal-content">
+      <input 
+        id="search-input" 
+        type="text" 
+        placeholder="Search bookmarks..." 
+        aria-label="Search bookmarks"
+      >
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="edit-modal hidden">
+    <div class="edit-modal-overlay"></div>
+    <div class="edit-modal-content">
+      <h3>Edit Bookmark</h3>
+      <div class="edit-form">
+        <div class="form-group">
+          <label for="edit-title">Title:</label>
+          <input id="edit-title" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="edit-url">URL:</label>
+          <input id="edit-url" type="url" />
+        </div>
+        <div class="form-group">
+          <label for="edit-folder">Folder:</label>
+          <select id="edit-folder"></select>
+        </div>
+        <div class="form-actions">
+          <button id="cancel-edit" class="btn-secondary">Cancel</button>
+          <button id="update-bookmark" class="btn-primary" disabled>Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Load JavaScript module (bookmark rendering & top sites) -->
   <script src="newtab.js" type="module"></script>
