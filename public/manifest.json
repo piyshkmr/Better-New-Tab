@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Better New Tabs",
+    "version": "1.0.0",
+    "description": "A clean, modern, and personalized new tab page for your browser.",
+    "permissions": [
+        "bookmarks",
+        "storage",
+        "favicon"
+    ],
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "offline_enabled": true
+}
