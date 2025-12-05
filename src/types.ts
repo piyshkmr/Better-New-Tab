@@ -8,5 +8,3 @@ export interface BookmarkNode {
     dateGroupModified?: number;
     children?: BookmarkNode[];
 }
-
-export type BookmarkTree = BookmarkNode[];

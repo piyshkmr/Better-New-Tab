@@ -16,12 +16,13 @@ import {
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import type { BookmarkNode } from './types';
 import { useBookmarks } from './hooks/useBookmarks';
+import { useUser } from './hooks/useUser';
 import { Header } from './components/Header';
 import { BookmarkRow } from './components/BookmarkRow';
 import { BookmarkCard } from './components/BookmarkCard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { EditBookmarkDialog } from './components/EditBookmarkDialog';
-
+import { OnboardingDialog } from './components/OnboardingDialog';
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -32,9 +33,6 @@ const dropAnimation: DropAnimation = {
     },
   }),
 };
-
-import { useUser } from './hooks/useUser';
-import { OnboardingDialog } from './components/OnboardingDialog';
 
 /**
  * Main application component.
@@ -257,20 +255,11 @@ function App() {
 
           <DragOverlay dropAnimation={dropAnimation}>
             {activeBookmark ? (
-              // Ensure we pass a clean bookmark object and force opacity/styles to look "solid"
               <div className="opacity-100">
                 <BookmarkCard
                   bookmark={activeBookmark}
                   onEdit={() => { }}
                   isOverlay
-                // We might need to force a specific style or prop to ensure it doesn't look "dragging" (ghostly)
-                // The BookmarkCard component checks `isDragging` from useSortable.
-                // Inside DragOverlay, useSortable returns isDragging=false usually (or we don't call it).
-                // Wait, BookmarkCard calls useSortable.
-                // We should probably wrap BookmarkCard or pass a prop to disable useSortable or force style.
-                // Actually, since we are rendering a fresh component in overlay, it will have its own useSortable hook.
-                // But useSortable(id) inside overlay might be tricky.
-                // Better to have a "DragPreview" version of the card or pass a prop to disable DnD logic in the card.
                 />
               </div>
             ) : null}
@@ -288,8 +277,14 @@ function App() {
       <EditBookmarkDialog
         isOpen={!!editingBookmark}
         bookmark={editingBookmark}
+        folders={items}
         onClose={() => setEditingBookmark(null)}
-        onSave={updateBookmark}
+        onSave={(id, title, url, newFolderId) => {
+          updateBookmark(id, title, url);
+          if (newFolderId) {
+            moveBookmark(id, newFolderId);
+          }
+        }}
         onDelete={removeBookmark}
       />
 

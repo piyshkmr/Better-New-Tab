@@ -45,8 +45,22 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({ bookmark, onEdit, is
             return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${pageUrl}&size=32`;
         }
         // Fallback
-        const urlObj = new URL(url);
-        return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+        try {
+            const urlObj = new URL(url);
+            return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+        } catch {
+            return '';
+        }
+    };
+
+    /** Safely extracts hostname from a URL, returning empty string on failure */
+    const getHostname = (url?: string): string => {
+        if (!url) return '';
+        try {
+            return new URL(url).hostname;
+        } catch {
+            return '';
+        }
     };
 
     if (isDragging && !isOverlay) {
@@ -83,7 +97,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({ bookmark, onEdit, is
                         className="text-muted-foreground truncate opacity-70 leading-tight"
                         style={{ fontSize: 'var(--card-url-size, 12px)' }}
                     >
-                        {bookmark.url ? new URL(bookmark.url).hostname : ''}
+                        {getHostname(bookmark.url)}
                     </p>
                 </div>
             </div>
@@ -123,8 +137,12 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({ bookmark, onEdit, is
                                         // Fallback to google S2 if native fails (e.g. dev mode)
                                         const img = e.target as HTMLImageElement;
                                         if (!img.src.includes('google.com')) {
-                                            const urlObj = new URL(bookmark.url!);
-                                            img.src = `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+                                            const hostname = getHostname(bookmark.url);
+                                            if (hostname) {
+                                                img.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
+                                            } else {
+                                                img.style.display = 'none';
+                                            }
                                         } else {
                                             img.style.display = 'none';
                                         }
@@ -145,7 +163,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({ bookmark, onEdit, is
                             className="text-muted-foreground truncate opacity-70 leading-tight"
                             style={{ fontSize: 'var(--card-url-size, 12px)' }}
                         >
-                            {bookmark.url ? new URL(bookmark.url).hostname : ''}
+                            {getHostname(bookmark.url)}
                         </p>
                     </div>
                 </div>

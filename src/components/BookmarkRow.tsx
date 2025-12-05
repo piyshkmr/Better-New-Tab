@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import type { BookmarkNode } from '../types';
 import { BookmarkCard } from './BookmarkCard';
-
 import { cn } from '../lib/utils';
 
 interface BookmarkRowProps {
     folder: BookmarkNode;
     onEdit: (bookmark: BookmarkNode) => void;
 }
-
-import { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight } from 'lucide-react';
 
 export const BookmarkRow: React.FC<BookmarkRowProps> = ({ folder, onEdit }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);

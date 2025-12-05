@@ -77,8 +77,6 @@ export const useTheme = () => {
     useEffect(() => {
         const root = document.documentElement;
         // Apply Accent Color
-
-        // Apply Accent Color
         const colorMap: Record<string, string> = {
             'bg-blue-500': '217.2 91.2% 59.8%',
             'bg-green-500': '142.1 76.2% 36.3%',
@@ -117,7 +115,7 @@ export const useTheme = () => {
         // Apply Font
         const fontMap: Record<string, string> = {
             'system-ui': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-            'sans': 'ui-sans-serif, system-ui, -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            'sans': 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
             'serif': 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
         };
 

@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle, DialogOverlay, DialogPortal } from "@radix-ui/react-dialog";
-import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogOverlay, DialogPortal } from "@radix-ui/react-dialog";
+import { X, ChevronDown } from 'lucide-react';
 import type { BookmarkNode } from '../types';
 
 interface EditBookmarkDialogProps {
     bookmark: BookmarkNode | null;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (id: string, title: string, url?: string) => void;
+    onSave: (id: string, title: string, url?: string, newFolderId?: string) => void;
     onDelete: (id: string) => void;
+    folders: BookmarkNode[];
 }
 
-export const EditBookmarkDialog: React.FC<EditBookmarkDialogProps> = ({ bookmark, isOpen, onClose, onSave, onDelete }) => {
+export const EditBookmarkDialog: React.FC<EditBookmarkDialogProps> = ({ bookmark, isOpen, onClose, onSave, onDelete, folders }) => {
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');
+    const [selectedFolderId, setSelectedFolderId] = useState<string>('');
 
     useEffect(() => {
         if (bookmark) {
             setTitle(bookmark.title);
             setUrl(bookmark.url || '');
+            setSelectedFolderId(bookmark.parentId || '');
         }
     }, [bookmark]);
 
     const handleSave = () => {
         if (bookmark) {
-            onSave(bookmark.id, title, url);
+            const folderChanged = selectedFolderId && selectedFolderId !== bookmark.parentId;
+            onSave(bookmark.id, title, url, folderChanged ? selectedFolderId : undefined);
             onClose();
         }
     };
@@ -54,6 +58,9 @@ export const EditBookmarkDialog: React.FC<EditBookmarkDialogProps> = ({ bookmark
                             </button>
                         </div>
                     </div>
+                    <DialogDescription className="text-sm text-muted-foreground -mt-2">
+                        Modify the bookmark details below.
+                    </DialogDescription>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -77,6 +84,26 @@ export const EditBookmarkDialog: React.FC<EditBookmarkDialogProps> = ({ bookmark
                                 onChange={(e) => setUrl(e.target.value)}
                                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="folder" className="text-right text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Folder
+                            </label>
+                            <div className="col-span-3 relative">
+                                <select
+                                    id="folder"
+                                    value={selectedFolderId}
+                                    onChange={(e) => setSelectedFolderId(e.target.value)}
+                                    className="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    {folders.map((folder) => (
+                                        <option key={folder.id} value={folder.id}>
+                                            {folder.title}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-50 pointer-events-none" />
+                            </div>
                         </div>
                     </div>
 
