@@ -3,6 +3,8 @@ node_modules
 dist
 build
 .DS_Store
+*.zip
+
 
 # Env
 .env
@@ -17,3 +19,4 @@ yarn-error.log*
 .vscode
 .idea
 *.swp
+

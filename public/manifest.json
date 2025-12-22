@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Better New Tabs",
+    "name": "Better New Tab",
     "version": "1.0.0",
     "description": "A clean, modern, and personalized new tab page for your browser.",
     "permissions": [
