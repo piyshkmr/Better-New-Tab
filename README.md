@@ -2,6 +2,8 @@
 
 A beautiful, modern, and personalized New Tab extension for Chrome.
 
+<img width="1468" height="858" alt="Better New Tab" src="https://github.com/user-attachments/assets/c93139ed-f554-40f1-b2c2-e95e0bf8d4d0" />
+
 
 ## Features ✨
 -   **Bookmark Management**: Organize your bookmarks with drag-and-drop ease.
